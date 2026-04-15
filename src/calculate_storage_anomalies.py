@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Calculate storage anomalies using elevation-area relationships for benchmark lakes.
-CLEAN VERSION - No fallbacks, maintains scientific integrity
 
 This script processes benchmark_daily CSV files and adds 18 columns:
 1. variable_area: 0 if either elevation-area relationship is significant, 1 otherwise
@@ -13,17 +12,12 @@ This script processes benchmark_daily CSV files and adds 18 columns:
    - Temporal: dis (discrete), con (continuous with ice-aware interpolation)
    
 Column naming: {model}_{filter}_{temporal} (e.g., swot_opt_dis, s2_filt_con)
-
-IMPORTANT: This version maintains scientific integrity by:
-- Returning NaN when required data is missing (no fallbacks)
-- Not making assumptions about which filter/model to use as substitute
-- Printing clear messages about missing data
-- Using consistent reference medians for discrete/continuous variants
 """
 import pandas as pd
 import numpy as np
 import os
 import glob
+from pathlib import Path
 from scipy import stats
 from scipy.interpolate import interp1d
 from sklearn.linear_model import LinearRegression
@@ -32,8 +26,9 @@ from sklearn.pipeline import Pipeline
 import warnings
 warnings.filterwarnings('ignore')
 
-# Change to project root directory
-os.chdir('/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production')
+# Project root is one level up from src/
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+os.chdir(PROJECT_ROOT)
 
 def calculate_storage_from_area_relationship(wse_values, area_func, reference_wse=None):
     """
