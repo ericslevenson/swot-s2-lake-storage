@@ -2,7 +2,7 @@
 
 Code and data supporting:
 
-> Levenson, E.S., Cooley, S.W., Wang, J., & Trudel, M. Assessing SWOT Capabilities for Water Storage Monitoring in Lakes. *Water Resources Research* (in review).
+> Levenson, E.S., Cooley, S.W., Wang, J., & Trudel, M. Assessing SWOT Capabilities for Water Storage Monitoring in Lakes.(submitted).
 
 ## Data
 
