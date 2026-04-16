@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 import warnings
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 warnings.filterwarnings('ignore')
 
 def acre_feet_to_km3(acre_feet_value):
@@ -174,7 +175,7 @@ def load_benchmark_normalized_errors(model, swot_filter, temporal):
     """Load normalized benchmark error statistics for a specific model configuration"""
     
     # Load the normalized benchmark summary statistics
-    benchmark_file = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/storage_normalized/results/benchmark_storage_variants_summary_stats_normalized.csv")
+    benchmark_file = PROJECT_ROOT / "analysis/storage_estimation_assessment/results_normalized/benchmark_storage_variants_summary_stats_normalized.csv"
     
     if not benchmark_file.exists():
         print(f"Warning: Benchmark file not found at {benchmark_file}")
@@ -357,12 +358,12 @@ def main(use_height_weighting=False):
     print("=" * 80)
     
     # Define paths
-    data_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/benchmark_daily")
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/storage_normalized/results/storage_uncertainty")
+    data_dir = PROJECT_ROOT / "data/benchmark_timeseries"
+    output_dir = PROJECT_ROOT / "analysis/storage_uncertainty_attribution/results"
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Load uncertainty combinations from input file (from the CORRECT location)
-    input_file = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage_uncertainty/input_uncertainties.csv")
+    input_file = PROJECT_ROOT / "analysis/storage_uncertainty_attribution/results/input_uncertainties.csv"
     
     if not input_file.exists():
         print(f"Error: Input file not found at {input_file}")

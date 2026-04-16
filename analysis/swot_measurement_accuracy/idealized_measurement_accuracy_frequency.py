@@ -7,14 +7,17 @@ import os
 import glob
 from datetime import datetime, timedelta
 
-os.chdir('/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production')
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+
+os.chdir(PROJECT_ROOT)
 
 def load_benchmark_data_with_ice():
     """Load benchmark daily data from individual files that contain ice column"""
     
     # Load problematic SWOT lake IDs to exclude
     try:
-        problematic_ids = pd.read_csv('data/benchmark/problematic_swot_lake_ids.csv', dtype={'swot_lake_id': str})
+        problematic_ids = pd.read_csv('data/problematic_swot_lake_ids.csv', dtype={'swot_lake_id': str})
         exclude_ids = set(problematic_ids['swot_lake_id'].values)
         print(f"Loaded {len(exclude_ids)} problematic lake IDs to exclude")
     except Exception as e:
@@ -22,7 +25,7 @@ def load_benchmark_data_with_ice():
         exclude_ids = set()
     
     # Find all benchmark_daily files
-    benchmark_files = glob.glob('data/timeseries/benchmark_daily/*_daily.csv')
+    benchmark_files = glob.glob('data/benchmark_timeseries/*_daily.csv')
     print(f"Found {len(benchmark_files)} benchmark_daily files")
     
     # Load and combine all data
@@ -60,7 +63,7 @@ def load_benchmark_data_with_ice():
     
     if not all_data:
         print("No files with ice column found! Falling back to combined file.")
-        return pd.read_csv('data/timeseries/benchmark_daily_combined.csv', 
+        return pd.read_csv('data/benchmark_timeseries_combined.csv', 
                           dtype={'swot_lake_id': str, 'swot_lake_id_y': str, 'gage_id': str})
     
     # Combine all data
@@ -72,7 +75,7 @@ def load_benchmark_data_with_ice():
 def load_lake_size_mapping():
     """Load lake size mapping from gage_swot_mapping.csv"""
     try:
-        lake_mapping = pd.read_csv('data/benchmark/gage_swot_mapping.csv', 
+        lake_mapping = pd.read_csv('data/gage_swot_mapping.csv', 
                                    dtype={'swot_lake_id': str, 'gage_id': str})
         lake_size_dict = dict(zip(lake_mapping['swot_lake_id'].astype(str), 
                                   lake_mapping['ref_area_swot']))
@@ -925,8 +928,8 @@ def create_snr_analysis_plot(snr_df, wsa_snr_df, df_with_size):
     plt.tight_layout()
     
     # Save the plot
-    os.makedirs('experiments/results/3.1/snr', exist_ok=True)
-    plt.savefig('experiments/results/3.1/snr/snr_analysis.png', 
+    os.makedirs('analysis/swot_measurement_accuracy/results/snr', exist_ok=True)
+    plt.savefig('analysis/swot_measurement_accuracy/results/snr/snr_analysis.png', 
                 dpi=300, bbox_inches='tight', facecolor='white')
     plt.close()
     
@@ -1281,7 +1284,7 @@ def calculate_wsa_nse_by_lake(df, wsa_optimal_result=None):
     
     return wsa_nse_df
 
-def export_nse_metrics_csv(nse_df, output_dir='experiments/results/3.1/nse'):
+def export_nse_metrics_csv(nse_df, output_dir='analysis/swot_measurement_accuracy/results/nse'):
     """Export NSE summary statistics to CSV (target distribution only)"""
     
     print("\nExporting NSE metrics to CSV...")
@@ -1321,7 +1324,7 @@ def export_nse_metrics_csv(nse_df, output_dir='experiments/results/3.1/nse'):
     
     return summary_csv_path, lake_csv_path
 
-def export_wsa_nse_metrics_csv(wsa_nse_df, output_dir='experiments/results/3.1/nse'):
+def export_wsa_nse_metrics_csv(wsa_nse_df, output_dir='analysis/swot_measurement_accuracy/results/nse'):
     """Export WSA NSE summary statistics to CSV (target distribution only)"""
     
     print("\nExporting WSA NSE metrics to CSV...")
@@ -1361,7 +1364,7 @@ def export_wsa_nse_metrics_csv(wsa_nse_df, output_dir='experiments/results/3.1/n
     
     return wsa_summary_csv_path, wsa_lake_csv_path
 
-def export_snr_metrics_csv(snr_df, output_dir='experiments/results/3.1/snr'):
+def export_snr_metrics_csv(snr_df, output_dir='analysis/swot_measurement_accuracy/results/snr'):
     """Export SNR summary statistics to CSV (target distribution only)"""
     
     print("\nExporting SNR metrics to CSV...")
@@ -1402,7 +1405,7 @@ def export_snr_metrics_csv(snr_df, output_dir='experiments/results/3.1/snr'):
     
     return summary_csv_path, lake_csv_path
 
-def export_wsa_snr_metrics_csv(wsa_snr_df, output_dir='experiments/results/3.1/snr'):
+def export_wsa_snr_metrics_csv(wsa_snr_df, output_dir='analysis/swot_measurement_accuracy/results/snr'):
     """Export WSA SNR summary statistics to CSV (target distribution only)"""
     
     print("\nExporting WSA SNR metrics to CSV...")
@@ -1443,7 +1446,7 @@ def export_wsa_snr_metrics_csv(wsa_snr_df, output_dir='experiments/results/3.1/s
     
     return wsa_summary_csv_path, wsa_lake_csv_path
 
-def export_error_metrics_csv(df, df_full_temporal=None, output_dir='experiments/results/3.1'):
+def export_error_metrics_csv(df, df_full_temporal=None, output_dir='analysis/swot_measurement_accuracy/results'):
     """Export WSE and WSA error metrics to CSV files"""
     
     print("\nCalculating and exporting error metrics to CSV...")
@@ -1876,8 +1879,8 @@ def create_combined_comprehensive_plot(df, df_with_size):
     plt.tight_layout()
     
     # Save the plot
-    os.makedirs('experiments/results/3.1', exist_ok=True)
-    plt.savefig('experiments/results/3.1/combined_comprehensive_analysis.png', 
+    os.makedirs('analysis/swot_measurement_accuracy/results', exist_ok=True)
+    plt.savefig('analysis/swot_measurement_accuracy/results/combined_comprehensive_analysis.png', 
                 dpi=300, bbox_inches='tight', facecolor='white')
     plt.close()
     
@@ -2042,12 +2045,12 @@ def create_target_vs_interpolated_comparison_plot(df, wse_optimal_result, wsa_op
     plt.tight_layout()
     
     # Save the plot
-    os.makedirs('experiments/results/3.1', exist_ok=True)
-    plt.savefig('experiments/results/3.1/target_vs_interpolated_comparison.png', 
+    os.makedirs('analysis/swot_measurement_accuracy/results', exist_ok=True)
+    plt.savefig('analysis/swot_measurement_accuracy/results/target_vs_interpolated_comparison.png', 
                 dpi=300, bbox_inches='tight', facecolor='white')
     plt.close()
     
-    print("Target vs Target-Daily comparison plot saved to: experiments/results/3.1/target_vs_interpolated_comparison.png")
+    print("Target vs Target-Daily comparison plot saved to: analysis/swot_measurement_accuracy/results/target_vs_interpolated_comparison.png")
     
     return fig
 
@@ -2156,8 +2159,8 @@ def create_interpolation_error_vs_gap_plot(df, wse_optimal_result):
     plt.tight_layout()
     
     # Save the plot
-    os.makedirs('experiments/results/3.1', exist_ok=True)
-    plt.savefig('experiments/results/3.1/interpolation_error_vs_gap.png', 
+    os.makedirs('analysis/swot_measurement_accuracy/results', exist_ok=True)
+    plt.savefig('analysis/swot_measurement_accuracy/results/interpolation_error_vs_gap.png', 
                 dpi=300, bbox_inches='tight', facecolor='white')
     plt.close()
     
@@ -2250,8 +2253,8 @@ def main():
     wsa_nse_summary_csv, wsa_nse_lake_csv = export_wsa_nse_metrics_csv(wsa_nse_df)
     '''
     print("\n=== ANALYSIS COMPLETE ===")
-    print("Results saved to experiments/results/3.1/combined_comprehensive_analysis.png")
-    print("SNR analysis saved to experiments/results/3.1/snr_analysis.png")
+    print("Results saved to analysis/swot_measurement_accuracy/results/combined_comprehensive_analysis.png")
+    print("SNR analysis saved to analysis/swot_measurement_accuracy/results/snr_analysis.png")
     print(f"WSE error metrics saved to: {wse_csv_path}")
     print(f"WSA error metrics saved to: {wsa_csv_path}")
     print(f"WSE SNR summary statistics saved to: {snr_summary_csv}")

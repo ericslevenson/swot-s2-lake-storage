@@ -32,8 +32,11 @@ from scipy.optimize import minimize_scalar
 
 # Set working directory and import path
 import sys
-os.chdir('/Users/ericlevenson/Dropbox/science/phd/SWOT/production')
-sys.path.append('/Users/ericlevenson/Dropbox/science/phd/SWOT/production')
+
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+os.chdir(PROJECT_ROOT)
+sys.path.append(str(PROJECT_ROOT))
 
 # Import all filters from centralized system
 from src.filter.filters import (
@@ -1364,16 +1367,16 @@ def main():
     print("=" * 50)
     
     # Create output directory
-    output_dir = 'experiments/01_swot_measurement_accuracy/filter_evaluation'
+    output_dir = 'analysis/swot_measurement_accuracy/results/filter_evaluation'
     os.makedirs(output_dir, exist_ok=True)
 
     # Load data
     print("Loading benchmark daily data...")
-    data_dir = "data/timeseries/benchmark_daily"
+    data_dir = "data/benchmark_timeseries"
     csv_files = glob.glob(os.path.join(data_dir, "*_daily.csv"))
     
     # Load problematic lake IDs
-    problematic_ids = pd.read_csv('data/benchmark/problematic_swot_lake_ids.csv', 
+    problematic_ids = pd.read_csv('data/problematic_swot_lake_ids.csv', 
                                   dtype={'swot_lake_id': str})
     problematic_lake_ids = set(str(lake_id) for lake_id in problematic_ids['swot_lake_id'].dropna().values)
     csv_files = [f for f in csv_files if not any(str(lake_id) in os.path.basename(f) for lake_id in problematic_lake_ids)]

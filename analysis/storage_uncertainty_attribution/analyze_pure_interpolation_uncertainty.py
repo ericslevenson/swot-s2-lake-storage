@@ -20,10 +20,11 @@ import glob
 from scipy.interpolate import interp1d
 from pathlib import Path
 import warnings
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 warnings.filterwarnings('ignore')
 
 # Change to project directory
-os.chdir('/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production')
+os.chdir(PROJECT_ROOT)
 
 def interpolate_gauge_to_gauge(gauge_dates_filtered, gauge_dates_all, gauge_values_all, filter_name):
     """
@@ -155,7 +156,7 @@ def process_all_lakes_pure_interpolation():
     """Process all benchmark lakes for pure interpolation uncertainty analysis."""
     
     # Get all benchmark daily files
-    data_dir = Path("data/timeseries/benchmark_daily")
+    data_dir = Path("data/benchmark_timeseries")
     csv_files = list(data_dir.glob("*_daily.csv"))
     print(f"Found {len(csv_files)} benchmark daily files")
     

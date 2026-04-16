@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 import warnings
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 warnings.filterwarnings('ignore')
 
 def acre_feet_to_km3(acre_feet_value):
@@ -164,7 +165,7 @@ def get_observed_error_from_benchmark_summary(model_info):
     """
     
     # Load benchmark summary file
-    benchmark_file = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage/benchmark_storage_variants_summary_stats.csv")
+    benchmark_file = PROJECT_ROOT / "analysis/storage_estimation_assessment/results/benchmark_storage_variants_summary_stats.csv"
     
     if not benchmark_file.exists():
         print(f"Warning: Benchmark file {benchmark_file} not found")
@@ -445,7 +446,7 @@ def run_uncertainty_combination(wse_std, wse_temporal_std, wse_filt_std, wsa_per
     """
     
     # Define paths
-    data_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/benchmark_daily")
+    data_dir = PROJECT_ROOT / "data/benchmark_timeseries"
     
     # Get CSV files
     csv_files = list(data_dir.glob("*_daily.csv"))
@@ -569,8 +570,8 @@ def main(use_height_weighting=False):
     print("Processing all uncertainty combinations from input_uncertainties.csv")
     
     # Define paths
-    input_file = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage_uncertainty/input_uncertainties.csv")
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage_uncertainty")
+    input_file = PROJECT_ROOT / "analysis/storage_uncertainty_attribution/results/input_uncertainties.csv"
+    output_dir = PROJECT_ROOT / "analysis/storage_uncertainty_attribution/results"
     
     # Create output directory
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -646,7 +647,7 @@ def main(use_height_weighting=False):
     print(f"Average observations per combination: {output_df['n_observations'].mean():.0f}")
     print(f"Average lakes per combination: {output_df['n_lakes'].mean():.0f}")
     
-    print("\\nResults saved to experiments/results/storage_uncertainty/storage_uncertainty_attribution.csv")
+    print("\\nResults saved to analysis/storage_uncertainty_attribution/results/storage_uncertainty_attribution.csv")
 
 
 if __name__ == "__main__":

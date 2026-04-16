@@ -17,8 +17,8 @@ WSA subsets (all reported as percentage errors):
 - static_optimal, static_filt
 
 Output files:
-- experiments/results/storage_uncertainty/wse_error_metrics_summary.csv
-- experiments/results/storage_uncertainty/wsa_error_metrics_summary.csv
+- analysis/storage_uncertainty_attribution/results/wse_error_metrics_summary.csv
+- analysis/storage_uncertainty_attribution/results/wsa_error_metrics_summary.csv
 """
 
 import pandas as pd
@@ -27,12 +27,13 @@ import os
 import glob
 from pathlib import Path
 from scipy.interpolate import interp1d
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 # Set working directory
-os.chdir('/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production')
+os.chdir(PROJECT_ROOT)
 
 # Create output directory if it doesn't exist
-output_dir = Path('experiments/01_swot_measurement_accuracy/uncertainty_attribution_inputs')
+output_dir = Path('analysis/storage_uncertainty_attribution/results')
 output_dir.mkdir(parents=True, exist_ok=True)
 
 
@@ -360,10 +361,10 @@ def main():
     print("Loading merged data...")
     
     # Load all merged CSV files
-    csv_files = glob.glob('data/timeseries/benchmark_daily/*.csv')
+    csv_files = glob.glob('data/benchmark_timeseries/*.csv')
     
     if not csv_files:
-        print("No merged CSV files found in data/timeseries/benchmark_daily/")
+        print("No merged CSV files found in data/benchmark_timeseries/")
         return
     
     # Read and concatenate all CSV files

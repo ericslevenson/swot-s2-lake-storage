@@ -19,6 +19,7 @@ import os
 import glob
 from pathlib import Path
 import warnings
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 warnings.filterwarnings('ignore')
 
 def acre_feet_to_km3(acre_feet_value):
@@ -239,8 +240,8 @@ def process_storage_variants_data():
     """Process all benchmark_daily CSV files for the new storage anomaly variants"""
     
     # Define paths
-    data_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/benchmark_daily")
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage")
+    data_dir = PROJECT_ROOT / "data/benchmark_timeseries"
+    output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results"
     
     # Create output directory if it doesn't exist
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -855,7 +856,7 @@ def main_variants():
     
     if result is not None:
         results_df, summary_df = result
-        output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage")
+        output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results"
         
         # Create all comparison plots using the per-lake results DataFrame
         create_all_storage_variant_plots(results_df, output_dir)
@@ -872,8 +873,8 @@ def process_benchmark_daily_files_original():
     """Process all benchmark_daily CSV files and calculate storage error metrics (original version)"""
     
     # Define paths
-    data_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/benchmark_daily")
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage")
+    data_dir = PROJECT_ROOT / "data/benchmark_timeseries"
+    output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results"
     
     # Create output directory if it doesn't exist
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1406,7 +1407,7 @@ def main():
     print("=" * 50)
     
     # Define output directory
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/results/storage")
+    output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results"
     
     # Step 1: Process benchmark daily files and calculate error metrics
     print("Processing benchmark daily files...")

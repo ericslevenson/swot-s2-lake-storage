@@ -191,7 +191,7 @@ def getResult(index, lake_id):
         
         # Write file
         filename = f'{lake_id}_ice.csv'
-        directory = '/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/GEE_S2_ice_timeseries/'
+        directory = 'data/timeseries/GEE_S2_ice_timeseries/'
         with open(directory + filename, 'w') as out_file:
             # Write header
             header = 'date,id,ice_percentage,coverage'
@@ -227,7 +227,7 @@ if __name__ == '__main__':
     ids= [7421087812, 7720003253, 7720025003, 7740023192]
     # Create output directory if it doesn't exist
     import os
-    output_dir = '/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/GEE_S2_ice_timeseries/'
+    output_dir = 'data/timeseries/GEE_S2_ice_timeseries/'
     os.makedirs(output_dir, exist_ok=True)
     
     # Process with multiprocessing

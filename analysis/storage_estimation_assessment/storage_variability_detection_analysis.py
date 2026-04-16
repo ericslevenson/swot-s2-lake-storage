@@ -23,6 +23,7 @@ import random
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 import seaborn as sns
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 warnings.filterwarnings('ignore')
 
 
@@ -669,8 +670,8 @@ def main():
     print("Combines original (all windows) with v2 (≥2 SWOT) methods")
     
     # Configuration
-    daily_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/benchmark_daily")
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/02_storage_estimation_accuracy/results/changedetection/")
+    daily_dir = PROJECT_ROOT / "data/benchmark_timeseries"
+    output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results/changedetection/"
     
     n_samples_per_window = 100  # Random samples per time window per lake
     max_lakes = None  # None = analyze all lakes

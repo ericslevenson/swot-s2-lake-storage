@@ -19,6 +19,7 @@ import os
 import glob
 from pathlib import Path
 import warnings
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 warnings.filterwarnings('ignore')
 
 def acre_feet_to_km3(acre_feet_value):
@@ -251,8 +252,8 @@ def process_storage_variants_data():
     """Process all benchmark_daily CSV files for normalized storage anomaly variants"""
     
     # Define paths
-    data_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/data/timeseries/benchmark_daily")
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/storage_normalized/results")
+    data_dir = PROJECT_ROOT / "data/benchmark_timeseries"
+    output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results_normalized"
     
     # Create output directory if it doesn't exist
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -583,7 +584,7 @@ def main_variants():
     
     if result is not None:
         results_df, summary_df = result
-        output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/storage_normalized/results")
+        output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results_normalized"
         
         # Create plot using the per-lake results DataFrame
         create_inverted_storage_boxplots(results_df, output_dir)

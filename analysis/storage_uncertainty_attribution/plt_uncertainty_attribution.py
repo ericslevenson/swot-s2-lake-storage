@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 # Set style
 plt.style.use('default')
@@ -24,7 +25,7 @@ def load_data():
     """Load the normalized uncertainty attribution data with benchmark values"""
     
     # Load normalized uncertainty attribution data
-    uncertainty_file = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/storage_normalized/results/storage_uncertainty/storage_uncertainty_attribution_normalized.csv")
+    uncertainty_file = PROJECT_ROOT / "analysis/storage_uncertainty_attribution/results/storage_uncertainty_attribution_normalized.csv"
     
     if not uncertainty_file.exists():
         print(f"Error: Normalized uncertainty file not found at {uncertainty_file}")
@@ -250,7 +251,7 @@ def create_filtered_stacked_bars():
     plt.tight_layout()
     
     # Save figure
-    output_dir = Path("/Users/ericlevenson/University of Oregon Dropbox/Eric Levenson/SWOT/production/experiments/storage_normalized/results")
+    output_dir = PROJECT_ROOT / "analysis/storage_estimation_assessment/results_normalized"
     output_file = output_dir / "filtered_uncertainty_stacked_bars_normalized.png"
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
     print(f"Saved normalized stacked bar plot to {output_file}")
