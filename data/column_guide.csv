@@ -1,0 +1,77 @@
+column_name,description,units,source
+date,Observation date (daily resolution; rows without satellite data contain gauge observations only),YYYY-MM-DD,
+swot_lake_id,SWOT Prior Lake Database (PLD) identifier,,PLD
+gage_id,In situ gauge station identifier,,USGS/USBR/CDEC
+data_source,"Gauge data provider (NWIS, USBR, or CDEC)",,
+stage,Gauge water surface elevation,m,Gauge
+stage_anomaly_swotdates,Gauge WSE anomaly from median of dates with coincident SWOT observations; used for bias-corrected WSE error calculation,m,Derived from gauge
+stage_anomaly_alldates,Gauge WSE anomaly from median of all gauge observation dates,m,Derived from gauge
+storage,Gauge-measured water storage,acre-feet or km³,Gauge
+wsa,Gauge-derived water surface area from stage-storage curve derivative,km²,Derived from gauge
+storage_anomaly_opt,Gauge storage anomaly on dates passing idealized (optimal) filter,km³,Derived from gauge
+storage_anomaly_filt,Gauge storage anomaly on dates passing adaptive filter,km³,Derived from gauge
+swot_wse,SWOT LakeSP water surface elevation,m,SWOT LakeSP
+swot_wse_anomaly,"SWOT WSE anomaly from median, bias-corrected using coincident gauge observations",m,Derived from SWOT
+swot_wse_error,"Signed WSE error (SWOT anomaly minus gauge anomaly, using swotdates median)",m,Derived
+swot_wse_abs_error,Absolute value of swot_wse_error,m,Derived
+swot_wse_error_alldates,"Signed WSE error using gauge anomaly from all dates (stage_anomaly_alldates) instead of coincident dates only",m,Derived
+swot_wsa,SWOT LakeSP water surface area (area_total),km²,SWOT LakeSP
+swot_wsa_resid,SWOT WSA error relative to gauge-derived WSA,km²,Derived
+swot_quality_f,SWOT mission quality flag (0 = good quality),,SWOT LakeSP
+swot_wse_std,Standard deviation of intra-lake pixel WSE measurements,m,SWOT LakeSP
+swot_wse_u,SWOT WSE formal uncertainty estimate,m,SWOT LakeSP
+swot_wse_r_u,SWOT WSE random-only uncertainty estimate,m,SWOT LakeSP
+swot_xovr_cal_q,"Crossover calibration quality flag (0 = best, higher = worse)",,SWOT LakeSP
+swot_partial_f,Partial observation flag (1 = full lake observed),,SWOT LakeSP
+swot_ice_clim_f,Climatological ice flag from PLD,,SWOT LakeSP
+swot_ice_dyn_f,Dynamic ice flag from SWOT observation,,SWOT LakeSP
+swot_area_total,Total water surface area (detected + dark water),km²,SWOT LakeSP
+swot_area_detct,Detected (classified) water area,km²,SWOT LakeSP
+swot_area_det_u,Uncertainty of detected water area,km²,SWOT LakeSP
+swot_dark_frac,Fraction of lake area classified as dark water (low radar backscatter),fraction,SWOT LakeSP
+swot_layovr_val,Layover flag value indicating radar layover effects,,SWOT LakeSP
+swot_continent_id,Continent identifier from PLD,,SWOT LakeSP
+swot_crid,Composite Release ID indicating SWOT data processing version,,SWOT LakeSP
+swot_cycle_id,SWOT orbit cycle number,,SWOT LakeSP
+swot_pass_id,SWOT orbit pass number,,SWOT LakeSP
+swot_time_str,Exact SWOT observation timestamp,UTC string,SWOT LakeSP
+swot_time_tai,SWOT observation time in TAI seconds,seconds since 2000-01-01,SWOT LakeSP
+swot_lake_name,Lake name from PLD,,SWOT LakeSP
+swot_p_lat,PLD lake centroid latitude,degrees north,SWOT LakeSP
+swot_p_lon,PLD lake centroid longitude,degrees east,SWOT LakeSP
+swot_p_ref_area,PLD reference (static) lake area,km²,SWOT LakeSP
+swot_p_ref_wse,PLD reference water surface elevation,m,SWOT LakeSP
+swot_p_storage,PLD reference storage estimate,km³,SWOT LakeSP
+swot_dry_trop_c,Dry tropospheric correction applied to WSE,m,SWOT LakeSP
+swot_wet_trop_c,Wet tropospheric correction applied to WSE,m,SWOT LakeSP
+swot_iono_c,Ionospheric correction applied to WSE,m,SWOT LakeSP
+swot_xovr_cal_c,Crossover calibration correction applied to WSE,m,SWOT LakeSP
+swot_pole_tide,Pole tide correction applied to WSE,m,SWOT LakeSP
+swot_solid_tide,Solid Earth tide correction applied to WSE,m,SWOT LakeSP
+swot_load_tidef,Load tide (FES model) correction applied to WSE,m,SWOT LakeSP
+swot_load_tideg,Load tide (GOT model) correction applied to WSE,m,SWOT LakeSP
+swot_geoid_hght,Geoid height at lake location,m,SWOT LakeSP
+s2_wsa,"Sentinel-2 water surface area from adaptive NDWI thresholding (50th percentile threshold), cloud-masked",km²,Sentinel-2
+s2_wsa_resid,Sentinel-2 WSA error relative to gauge-derived WSA,km²,Derived
+s2_coverage,Fraction of lake covered by cloud-free Sentinel-2 pixels,fraction,Sentinel-2
+s2_ice,Sentinel-2-derived ice presence flag,,Sentinel-2
+ice,Combined ice flag (1 = ice present from any source),,Derived
+clim_ice,Climatological ice flag for the observation date,,PLD
+adaptive_filter,"Adaptive filter result (1 = observation passes filter, 0 = rejected)",,Wang et al. 2025
+variable_area,"Whether lake has a significant area-elevation relationship (0 = significant, 1 = not significant)",,Derived
+swot_opt_dis,"SWOT model storage anomaly, idealized filter (opt = idealized in manuscript), discrete temporal resolution",km³,Derived
+swot_opt_con,"SWOT model storage anomaly, idealized filter, continuous (interpolated) temporal resolution",km³,Derived
+swot_filt_dis,"SWOT model storage anomaly, adaptive filter (filt = adaptive/functional in manuscript), discrete temporal resolution",km³,Derived
+swot_filt_con,"SWOT model storage anomaly, adaptive filter, continuous (interpolated) temporal resolution",km³,Derived
+swots2_opt_dis,"SWOT-S2 model storage anomaly (SWOT WSE + S2 WSA AE curve), idealized filter, discrete",km³,Derived
+swots2_opt_con,"SWOT-S2 model storage anomaly, idealized filter, continuous",km³,Derived
+swots2_filt_dis,"SWOT-S2 model storage anomaly, adaptive filter, discrete",km³,Derived
+swots2_filt_con,"SWOT-S2 model storage anomaly, adaptive filter, continuous",km³,Derived
+s2_opt_dis,"S2 model storage anomaly (WSA-derived WSE via inverted AE curve), idealized filter, discrete",km³,Derived
+s2_opt_con,"S2 model storage anomaly, idealized filter, continuous",km³,Derived
+s2_filt_dis,"S2 model storage anomaly, adaptive filter, discrete",km³,Derived
+s2_filt_con,"S2 model storage anomaly, adaptive filter, continuous",km³,Derived
+static_opt_dis,"Static area model storage anomaly (SWOT WSE + PLD static area), idealized filter, discrete",km³,Derived
+static_opt_con,"Static area model storage anomaly, idealized filter, continuous",km³,Derived
+static_filt_dis,"Static area model storage anomaly, adaptive filter, discrete",km³,Derived
+static_filt_con,"Static area model storage anomaly, adaptive filter, continuous",km³,Derived
