@@ -1,0 +1,1 @@
+# Filter module for SWOT analysis
