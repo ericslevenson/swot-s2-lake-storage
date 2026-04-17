@@ -213,7 +213,7 @@ def interpolate_s2_areas_to_ice_free_dates(df):
         return None
     
     # Get S2 data for interpolation
-    s2_data_with_areas = df_s2_valid[['date', 's2_wsa_cor']].dropna()
+    s2_data_with_areas = df_s2_valid[['date', 's2_wsa']].dropna()
     
     if len(s2_data_with_areas) < 2:
         return None
@@ -268,7 +268,7 @@ def interpolate_s2_areas_to_ice_free_dates(df):
                 return None
         
         # Interpolate S2 area values
-        area_interp_func = interp1d(s2_dates_numeric, s2_data_with_areas['s2_wsa_cor'], 
+        area_interp_func = interp1d(s2_dates_numeric, s2_data_with_areas['s2_wsa'], 
                                    kind='linear', bounds_error=False, fill_value=np.nan)
         
         interpolated_s2_areas = area_interp_func(interp_dates_numeric)
@@ -367,7 +367,7 @@ def build_area_elevation_relationships(df, filter_type='opt'):
     # S2 relationship: SWOT WSE vs S2 WSA (matched within 3 days)
     # Get S2 observations that pass coverage filter
     s2_filter = ((df['s2_coverage'] > 99) & (df['ice'] == 0))
-    df_s2_valid = df[s2_filter].dropna(subset=['s2_wsa_cor']).copy()
+    df_s2_valid = df[s2_filter].dropna(subset=['s2_wsa']).copy()
     
     # Get SWOT WSE observations that pass base filter
     df_swot_wse_valid = df[swot_wse_filter].dropna(subset=['swot_wse_anomaly']).copy()
@@ -392,7 +392,7 @@ def build_area_elevation_relationships(df, filter_type='opt'):
             if within_3days.any():
                 # Use the closest S2 observation within 3 days
                 closest_idx = time_diffs[within_3days].idxmin()
-                s2_value = df_s2_valid.loc[closest_idx, 's2_wsa_cor']
+                s2_value = df_s2_valid.loc[closest_idx, 's2_wsa']
             else:
                 # No S2 observation within 3 days - exclude this observation
                 s2_value = np.nan
@@ -527,7 +527,7 @@ def calculate_storage_anomalies_for_model(df, relationships, model_type, filter_
             # Use S2 area to predict WSE, then calculate storage
             # S2 uses its own quality criteria - not aligned with SWOT temporal filtering
             s2_filter = ((df['s2_coverage'] > 99) & (df['ice'] == 0))
-            df_s2_valid = df[s2_filter].dropna(subset=['s2_wsa_cor']).copy()
+            df_s2_valid = df[s2_filter].dropna(subset=['s2_wsa']).copy()
             df_swot_wse_valid = df[swot_wse_filter].dropna(subset=['swot_wse_anomaly']).copy()
             
             if len(df_s2_valid) > 0 and len(df_swot_wse_valid) > 0:
@@ -535,9 +535,9 @@ def calculate_storage_anomalies_for_model(df, relationships, model_type, filter_
                 inverse_func = build_s2_area_to_wse_function(df_s2_valid, df_swot_wse_valid)
                 if inverse_func is not None:
                     # Use S2's own quality filter for S2 observations
-                    s2_mask = s2_filter & df['s2_wsa_cor'].notna()
+                    s2_mask = s2_filter & df['s2_wsa'].notna()
                     if s2_mask.any():
-                        s2_areas = df.loc[s2_mask, 's2_wsa_cor'].values
+                        s2_areas = df.loc[s2_mask, 's2_wsa'].values
                         predicted_wse = inverse_func(s2_areas)
                         storage_values = calculate_storage_from_area_relationship(
                             predicted_wse, area_func, reference_wse)
@@ -569,7 +569,7 @@ def calculate_storage_anomalies_for_model(df, relationships, model_type, filter_
             # Use S2 area to predict WSE, then calculate storage
             # For continuous S2: use discrete observations + interpolated S2 areas
             s2_filter = ((df['s2_coverage'] > 99) & (df['ice'] == 0))
-            df_s2_valid = df[s2_filter].dropna(subset=['s2_wsa_cor']).copy()
+            df_s2_valid = df[s2_filter].dropna(subset=['s2_wsa']).copy()
             df_swot_wse_valid = df[swot_wse_filter].dropna(subset=['swot_wse_anomaly']).copy()
             
             if len(df_s2_valid) > 0 and len(df_swot_wse_valid) > 0:
@@ -577,9 +577,9 @@ def calculate_storage_anomalies_for_model(df, relationships, model_type, filter_
                 inverse_func = build_s2_area_to_wse_function(df_s2_valid, df_swot_wse_valid)
                 if inverse_func is not None:
                     # FIRST: Calculate discrete values for actual S2 observations
-                    s2_mask = s2_filter & df['s2_wsa_cor'].notna()
+                    s2_mask = s2_filter & df['s2_wsa'].notna()
                     if s2_mask.any():
-                        s2_areas = df.loc[s2_mask, 's2_wsa_cor'].values
+                        s2_areas = df.loc[s2_mask, 's2_wsa'].values
                         predicted_wse = inverse_func(s2_areas)
                         storage_values = calculate_storage_from_area_relationship(
                             predicted_wse, area_func, reference_wse)
@@ -683,7 +683,7 @@ def build_s2_area_to_wse_function(df_s2_valid, df_swot_wse_valid):
         within_3days = time_diffs <= 3
         if within_3days.any():
             closest_idx = time_diffs[within_3days].idxmin()
-            s2_area_value = df_s2_valid.loc[closest_idx, 's2_wsa_cor']
+            s2_area_value = df_s2_valid.loc[closest_idx, 's2_wsa']
             matched_data.append({
                 's2_area': s2_area_value,
                 'wse': swot_row['swot_wse_anomaly']
@@ -719,7 +719,7 @@ def process_lake_file(csv_file):
         df = pd.read_csv(csv_file, dtype={'gage_id': str, 'swot_lake_id': str})
         
         # Check for required columns
-        required_cols = ['swot_wsa', 'swot_wse_anomaly', 's2_wsa_cor', 
+        required_cols = ['swot_wsa', 'swot_wse_anomaly', 's2_wsa', 
                         'ice', 'swot_partial_f', 'swot_ice_clim_f', 's2_coverage', 'swot_xovr_cal_q', 
                         'swot_wse_std', 'swot_wse_u', 'date']
         
@@ -888,7 +888,7 @@ def main():
     os.makedirs('experiments/results/storage_anomalies', exist_ok=True)
     
     # Get all benchmark daily CSV files
-    csv_files = glob.glob('data/timeseries/benchmark_daily/*_daily.csv')
+    csv_files = glob.glob('data/benchmark_timeseries/*_daily.csv')
     csv_files.sort()
     
     print(f"Found {len(csv_files)} benchmark daily files")
