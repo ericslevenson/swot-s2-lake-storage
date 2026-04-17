@@ -5,6 +5,8 @@ Created from GEE_S2_timeseries.py
 Modified to classify ice instead of water using methods from arcticIce.py
 
 @author: ericlevenson
+
+Edit the lake ids and output directories at end of script, date range at top of script.
 """
 import ee
 import logging
@@ -14,8 +16,8 @@ import sys
 
 ee.Initialize(opt_url='https://earthengine-highvolume.googleapis.com')
 
-start = '2023-3-1'
-finish = '2025-8-26'
+start = 'YYYY-MM-DD'
+finish = 'YYYY-MM-DD'
 
 # Image scale
 pixScale = 10
@@ -224,10 +226,10 @@ if __name__ == '__main__':
     )
     
     # Lake IDs to process - using same IDs as original GEE_S2_timeseries.py
-    ids= [7421087812, 7720003253, 7720025003, 7740023192]
+    ids= [] # list of lake ids
     # Create output directory if it doesn't exist
     import os
-    output_dir = 'data/timeseries/GEE_S2_ice_timeseries/'
+    output_dir = 'path/to/output/directory/'
     os.makedirs(output_dir, exist_ok=True)
     
     # Process with multiprocessing

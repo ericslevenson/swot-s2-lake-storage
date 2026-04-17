@@ -5,6 +5,8 @@ Created from GEE_S2_timeseries.ipynb
 Converted to local processing script
 
 @author: ericlevenson
+
+Edit date range at top of script, lake ids and output directory at end of script.
 """
 import ee
 import logging
@@ -14,8 +16,8 @@ import sys
 
 ee.Initialize(opt_url='https://earthengine-highvolume.googleapis.com')
 
-start = '2023-7-21'
-finish = '2025-10-6'
+start = 'YYYY-MM-DD'
+finish = 'YYYY-MM-DD'
 
 # Image scale
 pixScale = 10
@@ -363,11 +365,10 @@ if __name__ == '__main__':
     )
     
     # Lake IDs to process
-    #ids=[7720009473, 7420024963, 8121282692, 7720009733, 7410042502, 7720014343, 7420464263, 7730013832, 7510140043, 7740010893, 7510154643, 7420077843, 7740024723, 7320195353, 7420310553, 7730001053, 7820014623, 7420832032, 7410010233, 7120116133, 7250051493, 7740048553, 7720025003, 7420536883, 7430059572, 7420192693, 7421019193, 7820016633, 7510103363, 7430056772, 7820047173, 7820015173, 7720023243, 7520024523, 7520005453, 7830198863, 7420081743, 7420108243, 7720009683, 7120754902, 7120838103, 7420552793, 7420861403, 7410005852, 7740037982, 7720014303, 7420310883, 7510138853, 7720003433, 7510103403, 7420125293, 7420348653, 7740042733, 7430014452, 7420418293, 7720003573, 7420115193, 7510103423]
-    ids=[7120003053]
+    ids=[]
     # Create output directory if it doesn't exist
     import os
-    output_dir = 'data/timeseries/GEE_S2_timeseries/'
+    output_dir = 'path/to/output/directory/'
     os.makedirs(output_dir, exist_ok=True)
     
     # Process with multiprocessing
